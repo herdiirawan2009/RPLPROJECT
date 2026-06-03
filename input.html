@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Harian - Uni Life Support</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+        background: linear-gradient(to bottom right, #eff6ff, #e0e7ff);
+        background-attachment: fixed;
+        min-height: 100vh;
+        color: #1f2937;
+        padding-bottom: 150px; 
+      }
+
+      .container {
+        max-width: 48rem; 
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem;
+      }
+
+      .card {
+        background: #ffffff;
+        border-radius: 24px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+        border: 1px solid #f1f5f9;
+        padding: 2.5rem;
+      }
+
+      .page-header {
+        margin-bottom: 2.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .header-text h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #1e3a8a;
+        margin-bottom: 0.25rem;
+      }
+      .header-text p {
+        color: #64748b;
+        font-weight: 500;
+      }
+
+      .user-avatar-link {
+        display: block;
+        text-decoration: none;
+      }
+      .user-avatar {
+        width: 65px;
+        height: 65px;
+        border-radius: 22px;
+        object-fit: cover;
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.25);
+        border: 3px solid #ffffff;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: #f1f5f9;
+      }
+      .user-avatar-link:hover .user-avatar {
+        transform: translateY(-4px) scale(1.05);
+        box-shadow: 0 15px 25px rgba(59, 130, 246, 0.35);
+        border-color: #eff6ff;
+      }
+
+      .info-box {
+        background: #f0f9ff;
+        border: 1px solid #bae6fd;
+        border-radius: 16px;
+        padding: 1rem 1.5rem;
+        font-weight: 600;
+        color: #0284c7;
+        margin-bottom: 2.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        box-shadow: 0 4px 12px rgba(56, 189, 248, 0.1);
+      }
+      .info-box svg {
+        color: #0ea5e9;
+        flex-shrink: 0;
+      }
+      .hidden { display: none; }
+
+      .input-section { margin-bottom: 2.5rem; }
+      .input-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 1.25rem;
+      }
+
+      .slider-box {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 20px;
+        padding: 1.5rem 2rem;
+      }
+      .slider-box.purple { background: #faf5ff; border-color: #e9d5ff; }
+      
+      .slider-value {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.25rem;
+      }
+      .slider-value span:first-child {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #2563eb;
+      }
+      .slider-box.purple .slider-value span:first-child { color: #9333ea; }
+      .slider-status {
+        font-weight: 700;
+        color: #475569;
+        background: white;
+        padding: 0.4rem 1rem;
+        border-radius: 100px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      }
+
+      .slider {
+        width: 100%;
+        height: 14px;
+        border-radius: 100px;
+        background: #dbeafe;
+        outline: none;
+        -webkit-appearance: none;
+      }
+      .slider.purple { background: #f3e8ff; }
+      .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #2563eb;
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
+        border: 4px solid white;
+      }
+      .slider.purple::-webkit-slider-thumb { 
+        background: #9333ea; 
+        box-shadow: 0 0 10px rgba(147, 51, 234, 0.4);
+      }
+      
+      .slider-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #94a3b8;
+        margin-top: 1rem;
+      }
+
+      .mood-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+      }
+      .mood-btn {
+        padding: 1.5rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 20px;
+        background: #f8fafc;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .mood-btn:hover {
+        border-color: #cbd5e1;
+        transform: translateY(-3px);
+      }
+      .mood-btn.active {
+        background: #eff6ff;
+        border-color: #3b82f6;
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.15);
+        transform: translateY(-5px) scale(1.02);
+      }
+      .mood-emoji { font-size: 3rem; }
+      .mood-btn span:last-child {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #334155;
+      }
+      .mood-btn.active span:last-child { color: #1e3a8a; }
+
+      .btn-submit {
+        width: 100%;
+        padding: 1.25rem;
+        background: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 16px;
+        font-weight: 800;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+      }
+      .btn-submit:hover { 
+        background: #2563eb; 
+        transform: translateY(-3px);
+        box-shadow: 0 15px 25px rgba(59, 130, 246, 0.4);
+      }
+
+      .floating-dock {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        padding: 1rem 2rem;
+        border-radius: 100px;
+        display: flex;
+        gap: 1.5rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+      }
+      .dock-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        text-decoration: none;
+        color: #475569;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+      }
+      .dock-item svg {
+        width: 30px;
+        height: 30px;
+        stroke-width: 2.2;
+        transition: all 0.3s;
+      }
+      .dock-item:hover {
+        background: rgba(255, 255, 255, 0.8);
+        transform: translateY(-8px);
+        color: #2563eb;
+      }
+      .dock-item.active {
+        background: #3b82f6;
+        color: white;
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+      }
+      .dock-item.logout { color: #ef4444; }
+      .dock-item.logout:hover {
+        background: #fee2e2;
+        color: #ef4444;
+      }
+    </style>
+</head>
+<body>
+
+    <nav class="floating-dock">
+      <a href="dashboard.html" class="dock-item">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+      </a>
+      <a href="input.html" class="dock-item active">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+      </a>
+      <a href="tugas.html" class="dock-item">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+      </a>
+      <a href="admin.html" class="dock-item" id="admin-link">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+      </a>
+      <button onclick="logout()" class="dock-item logout">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+      </button>
+    </nav>
+
+    <div class="container">
+      
+        <div class="page-header">
+            <div class="header-text">
+                <h1>Catat Harimu</h1>
+                <p id="current-date"></p>
+            </div>
+            
+            <a href="profil.html" class="user-avatar-link" title="Buka Profil">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=250&q=80" alt="Foto Profil" class="user-avatar">
+            </a>
+        </div>
+
+        <div class="card">
+            <div id="update-notice" class="info-box hidden">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                <div>Kamu sudah mengisi data hari ini. Formulir ini akan memperbarui datamu.</div>
+            </div>
+
+            <form id="daily-input-form">
+                
+                <div class="input-section">
+                    <label class="input-label">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                        Durasi Tidur Semalam
+                    </label>
+                    <div class="slider-box">
+                        <div class="slider-value">
+                            <div><span id="sleep-value">7</span> jam</div>
+                            <span class="slider-status" id="sleep-status">😊 Cukup baik</span>
+                        </div>
+                        <input type="range" id="sleep-input" min="0" max="12" step="1" value="7" class="slider">
+                        <div class="slider-labels">
+                            <span>0 jam</span>
+                            <span>12 jam</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-section">
+                    <label class="input-label">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path>
+                        </svg>
+                        Tingkat Stres Saat Ini
+                    </label>
+                    <div class="slider-box purple">
+                        <div class="slider-value">
+                            <div><span id="stress-value">5</span> /10</div>
+                            <span class="slider-status" id="stress-status">😐 Sedang</span>
+                        </div>
+                        <input type="range" id="stress-input" min="1" max="10" step="1" value="5" class="slider purple">
+                        <div class="slider-labels">
+                            <span>1 (Santai)</span>
+                            <span>10 (Penat)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-section">
+                    <label class="input-label">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="2.5" style="color: #eab308;">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                        Gimana Mood Hari Ini?
+                    </label>
+                    
+                    <div class="mood-grid">
+                        <button type="button" class="mood-btn" data-mood="3">
+                            <span class="mood-emoji">😊</span>
+                            <span>Baik</span>
+                        </button>
+                        <button type="button" class="mood-btn active" data-mood="2">
+                            <span class="mood-emoji">😐</span>
+                            <span>Netral</span>
+                        </button>
+                        <button type="button" class="mood-btn" data-mood="1">
+                            <span class="mood-emoji">😫</span>
+                            <span>Buruk</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                    Simpan Jurnal Hari Ini
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (!user) window.location.href = 'index.html';
+
+        if (user.role !== 'admin') {
+            document.getElementById('admin-link').style.display = 'none';
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+
+        const today = new Date();
+        document.getElementById('current-date').textContent = today.toLocaleDateString('id-ID', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+
+        const healthData = JSON.parse(localStorage.getItem('healthData') || '[]');
+        const todayStr = today.toISOString().split('T')[0];
+        const todayEntry = healthData.find(d => d.userId === user.id && d.date.startsWith(todayStr));
+
+        if (todayEntry) {
+            document.getElementById('update-notice').classList.remove('hidden');
+            document.getElementById('sleep-input').value = todayEntry.sleepHours;
+            document.getElementById('stress-input').value = todayEntry.stressLevel;
+            updateSleepDisplay(todayEntry.sleepHours);
+            updateStressDisplay(todayEntry.stressLevel);
+
+            document.querySelectorAll('.mood-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (parseInt(btn.dataset.mood) === parseInt(todayEntry.mood)) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        document.getElementById('sleep-input').addEventListener('input', (e) => {
+            updateSleepDisplay(parseFloat(e.target.value));
+        });
+
+        document.getElementById('stress-input').addEventListener('input', (e) => {
+            updateStressDisplay(parseInt(e.target.value));
+        });
+
+        function updateSleepDisplay(hours) {
+            document.getElementById('sleep-value').textContent = hours;
+            let status = hours < 5 ? '😴 Kurang' : hours < 7 ? '😊 Cukup' : '✨ Ideal';
+            document.getElementById('sleep-status').textContent = status;
+        }
+
+        function updateStressDisplay(level) {
+            document.getElementById('stress-value').textContent = level;
+            let status = level <= 3 ? '😌 Santai' : level <= 6 ? '😐 Sedang' : '😰 Tinggi';
+            document.getElementById('stress-status').textContent = status;
+        }
+
+        document.querySelectorAll('.mood-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        document.getElementById('daily-input-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const sleepHours = parseFloat(document.getElementById('sleep-input').value);
+            const stressLevel = parseInt(document.getElementById('stress-input').value);
+            const activeMood = document.querySelector('.mood-btn.active');
+            
+            const mood = activeMood ? parseInt(activeMood.dataset.mood) : 2;
+
+            const existingIndex = healthData.findIndex(d => d.userId === user.id && d.date.startsWith(todayStr));
+
+            const entry = {
+                id: existingIndex >= 0 ? healthData[existingIndex].id : Date.now().toString(),
+                userId: user.id,
+                date: todayStr, 
+                sleepHours,
+                stressLevel,
+                mood
+            };
+
+            if (existingIndex >= 0) {
+                healthData[existingIndex] = entry;
+            } else {
+                healthData.push(entry);
+            }
+
+            localStorage.setItem('healthData', JSON.stringify(healthData));
+            window.location.href = 'dashboard.html';
+        });
+    </script>
+</body>
+</html>

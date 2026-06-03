@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Masuk - Uni Life Support</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+        background: #e0e7ff;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        color: #1f2937;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Abstract Blobs for Glassmorphism Effect */
+      .blob-1 {
+        position: absolute;
+        top: -10%;
+        left: -5%;
+        width: 500px;
+        height: 500px;
+        background: #93c5fd;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.7;
+        z-index: 0;
+      }
+      .blob-2 {
+        position: absolute;
+        bottom: -10%;
+        right: -5%;
+        width: 600px;
+        height: 600px;
+        background: #c4b5fd;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.6;
+        z-index: 0;
+      }
+
+      /* Sleek Glassmorphism Card */
+      .auth-card {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 28px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+        padding: 3rem 2.5rem;
+        max-width: 26rem;
+        width: 100%;
+        z-index: 10;
+      }
+
+      .logo-container {
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+      .logo-icon {
+        width: 56px;
+        height: 56px;
+        background: #3b82f6; /* Warna Biru Terang Asli */
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.25rem;
+        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); /* Bayangan Biru Terang */
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #1e3a8a; /* Warna Teks Judul Konsisten */
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.5px;
+      }
+      .logo-container p {
+        color: #475569;
+        font-weight: 500;
+        font-size: 0.95rem;
+      }
+
+      /* Form Inputs */
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+      .form-group label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        border-radius: 14px;
+        font-size: 1rem;
+        font-family: inherit;
+        color: #1e293b;
+        background: rgba(255, 255, 255, 0.8);
+        transition: all 0.3s ease;
+      }
+      .form-group input:focus {
+        outline: none;
+        border-color: #3b82f6; /* Warna Fokus Biru Terang */
+        background: #ffffff;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+      }
+      .form-group input::placeholder {
+        color: #94a3b8;
+      }
+
+      /* Error Message */
+      .error-message {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #dc2626;
+        padding: 0.85rem;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        display: none;
+        text-align: center;
+      }
+
+      /* Tombol Utama (Warna Biru Terang Asli) */
+      .btn {
+        width: 100%;
+        padding: 1.1rem;
+        background: #3b82f6; /* Warna Biru Terang Asli */
+        color: white;
+        border: none;
+        border-radius: 14px;
+        font-weight: 800; /* Sedikit lebih tebal */
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 0.5rem;
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.25); /* Bayangan Biru Terang */
+      }
+      .btn:hover {
+        background: #2563eb; /* Warna Sedikit Gelap untuk Efek */
+        transform: translateY(-2px);
+        box-shadow: 0 15px 25px rgba(59, 130, 246, 0.35);
+      }
+
+      /* Footer Link */
+      .auth-footer {
+        margin-top: 2rem;
+        text-align: center;
+        color: #475569;
+        font-size: 0.95rem;
+        font-weight: 500;
+      }
+      .auth-footer a {
+        color: #2563eb; /* Warna Teks Footer Link Biru Terang Asli */
+        font-weight: 700;
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .auth-footer a:hover {
+        color: #1d4ed8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="blob-1"></div>
+    <div class="blob-2"></div>
+
+    <div class="auth-card">
+      <div class="logo-container">
+        <div class="logo-icon">
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#ffffff"
+            stroke-width="2.5"
+          >
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+        </div>
+        <h1>Selamat Datang</h1>
+        <p>Masuk untuk melanjutkan ke dashboard</p>
+      </div>
+      
+      <form id="login-form">
+        <div class="form-group">
+          <label for="login-email">Alamat Email</label>
+          <input
+            type="email"
+            id="login-email"
+            placeholder="mahasiswa@kampus.ac.id"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="login-password">Kata Sandi</label>
+          <input
+            type="password"
+            id="login-password"
+            placeholder="Masukkan kata sandi"
+            required
+          />
+        </div>
+        <div id="login-error" class="error-message"></div>
+        <button type="submit" class="btn">Masuk Sekarang</button>
+      </form>
+      
+      <div class="auth-footer">
+        <p>Belum memiliki akun? <a href="register.html">Daftar di sini</a></p>
+      </div>
+    </div>
+
+    <script>
+      // Initialize demo data (Silently running in background)
+      function initializeDemoData() {
+        if (localStorage.getItem("dataInitialized")) return;
+
+        const demoUsers = [
+          {
+            id: "1",
+            email: "student@mail.com",
+            password: "password123",
+            name: "Faqih Lakaisha Putra",
+            role: "student",
+          },
+          {
+            id: "2",
+            email: "admin@mail.com",
+            password: "admin123",
+            name: "Admin System",
+            role: "admin",
+          },
+          {
+            id: "3",
+            email: "siti@mail.com",
+            password: "password123",
+            name: "Siti Nurhaliza",
+            role: "student",
+          },
+        ];
+
+        const demoHealthData = [
+          {
+            id: "101",
+            userId: "1",
+            date: "2026-04-20",
+            sleepHours: 7,
+            stressLevel: 5,
+            mood: 3,
+          },
+          {
+            id: "102",
+            userId: "1",
+            date: "2026-04-21",
+            sleepHours: 6,
+            stressLevel: 6,
+            mood: 2,
+          },
+          {
+            id: "103",
+            userId: "1",
+            date: "2026-04-22",
+            sleepHours: 5,
+            stressLevel: 7,
+            mood: 1,
+          },
+          {
+            id: "104",
+            userId: "1",
+            date: "2026-04-23",
+            sleepHours: 8,
+            stressLevel: 4,
+            mood: 3,
+          },
+          {
+            id: "105",
+            userId: "1",
+            date: "2026-04-24",
+            sleepHours: 7.5,
+            stressLevel: 5,
+            mood: 3,
+          },
+          {
+            id: "106",
+            userId: "1",
+            date: "2026-04-25",
+            sleepHours: 6.5,
+            stressLevel: 6,
+            mood: 2,
+          },
+          {
+            id: "107",
+            userId: "1",
+            date: "2026-04-26",
+            sleepHours: 7,
+            stressLevel: 5,
+            mood: 3,
+          },
+        ];
+
+        const demoTasks = [
+          {
+            id: "301",
+            userId: "1",
+            title: "Laporan Praktikum Fisika",
+            description: "Bab 3: Gerak Harmonik",
+            deadline: "2026-04-28",
+            status: "pending",
+          },
+          {
+            id: "302",
+            userId: "1",
+            title: "Tugas Kalkulus",
+            description: "Soal integral",
+            deadline: "2026-04-30",
+            status: "pending",
+          },
+          {
+            id: "303",
+            userId: "1",
+            title: "Presentasi Kelompok",
+            description: "Statistika",
+            deadline: "2026-05-05",
+            status: "pending",
+          },
+          {
+            id: "304",
+            userId: "1",
+            title: "Quiz Kimia",
+            description: "",
+            deadline: "2026-04-27",
+            status: "pending",
+          },
+        ];
+
+        localStorage.setItem("users", JSON.stringify(demoUsers));
+        localStorage.setItem("healthData", JSON.stringify(demoHealthData));
+        localStorage.setItem("tasks", JSON.stringify(demoTasks));
+        localStorage.setItem("dataInitialized", "true");
+      }
+
+      initializeDemoData();
+
+      const currentUser = localStorage.getItem("currentUser");
+      if (currentUser) {
+        window.location.href = "dashboard.html";
+      }
+
+      document
+        .getElementById("login-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const email = document.getElementById("login-email").value;
+          const password = document.getElementById("login-password").value;
+          const errorDiv = document.getElementById("login-error");
+
+          const users = JSON.parse(localStorage.getItem("users") || "[]");
+          const user = users.find(
+            (u) => u.email === email && u.password === password,
+          );
+
+          if (user) {
+            const userWithoutPassword = {
+              id: user.id,
+              email: user.email,
+              name: user.name,
+              role: user.role,
+            };
+            localStorage.setItem(
+              "currentUser",
+              JSON.stringify(userWithoutPassword),
+            );
+            window.location.href = "dashboard.html";
+          } else {
+            errorDiv.textContent = "Email atau kata sandi tidak valid.";
+            errorDiv.style.display = "block";
+          }
+        });
+    </script>
+  </body>
+</html>

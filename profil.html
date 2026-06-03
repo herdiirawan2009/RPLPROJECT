@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profil - Uni Life Support</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+        background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
+        background-attachment: fixed;
+        min-height: 100vh;
+        color: #1f2937;
+        padding-bottom: 3rem; 
+      }
+
+      .container {
+        max-width: 45rem; /* Ramping dan fokus */
+        margin: 0 auto;
+        padding: 2rem 1.5rem;
+      }
+
+      /* Tombol Kembali yang Elegan */
+      .back-nav {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #3b82f6;
+        font-weight: 700;
+        font-size: 1rem;
+        text-decoration: none;
+        margin-bottom: 1.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 100px;
+        background: rgba(59, 130, 246, 0.1);
+        transition: all 0.3s ease;
+      }
+      .back-nav:hover {
+        background: #3b82f6;
+        color: white;
+        transform: translateX(-5px);
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
+      }
+      .back-nav svg {
+        width: 20px;
+        height: 20px;
+        stroke-width: 2.5;
+      }
+
+      /* Card Style Normal */
+      .card {
+        background: #ffffff;
+        border-radius: 28px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04);
+        border: 1px solid #f8fafc;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        position: relative;
+      }
+
+      /* === STYLISH PROFILE HEADER (Cover + Avatar) === */
+      .profile-card {
+        padding-top: 0; /* Cover mepet ke atas */
+        overflow: hidden;
+      }
+      .profile-cover {
+        background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        height: 140px;
+        margin: 0 -2.5rem; /* Menarik ke ujung card */
+      }
+      .profile-main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-top: -60px; /* Menarik avatar ke atas cover */
+      }
+      .avatar-wrapper {
+        position: relative;
+        margin-bottom: 1rem;
+      }
+      
+      .avatar-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid #ffffff;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        background: #f1f5f9; /* Fallback color */
+      }
+      /* Tombol Ganti Foto (Mini) */
+      .edit-photo-btn {
+        position: absolute;
+        bottom: 5px;
+        right: 0;
+        width: 36px;
+        height: 36px;
+        background: #1e293b;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid #ffffff;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      }
+      .edit-photo-btn:hover {
+        background: #3b82f6;
+        transform: scale(1.1);
+      }
+
+      .profile-info h2 {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 0.25rem;
+        letter-spacing: -0.5px;
+      }
+      .profile-info p {
+        color: #64748b;
+        font-weight: 500;
+        font-size: 1.05rem;
+        margin-bottom: 0.75rem;
+      }
+      .role-badge {
+        display: inline-block;
+        background: #eff6ff;
+        color: #2563eb;
+        padding: 0.4rem 1.2rem;
+        border-radius: 100px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        border: 1px solid #bfdbfe;
+      }
+      .role-badge.admin {
+        background: #f0fdf4;
+        color: #16a34a;
+        border-color: #bbf7d0;
+      }
+
+      /* Stats Grid Mini */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        margin-top: 2rem;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 2rem;
+      }
+      .stat-item {
+        text-align: center;
+      }
+      .stat-item .value {
+        font-size: 1.7rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 0.25rem;
+      }
+      .stat-item .label {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      
+      .form-title {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: #1e3a8a;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+      .form-group label {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 0.5rem;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 1.1rem 1.25rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 16px;
+        font-size: 1rem;
+        font-family: inherit;
+        color: #1e293b;
+        background: #f8fafc;
+        transition: all 0.3s ease;
+      }
+      .form-group input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        background: #ffffff;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+      }
+
+      /* Buttons */
+      .btn {
+        width: 100%;
+        padding: 1.2rem;
+        background: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 16px;
+        font-weight: 800;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.25);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .btn:hover {
+        background: #2563eb;
+        transform: translateY(-3px);
+        box-shadow: 0 15px 25px rgba(59, 130, 246, 0.35);
+      }
+      
+      .btn-danger {
+        background: #ffffff;
+        color: #ef4444;
+        border: 2px solid #fee2e2;
+        box-shadow: none;
+        margin-top: 1rem;
+      }
+      .btn-danger:hover {
+        background: #fee2e2;
+        color: #dc2626;
+        transform: translateY(0);
+      }
+
+      /* Alert */
+      .alert {
+        padding: 1rem 1.5rem;
+        border-radius: 14px;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        display: none;
+        text-align: center;
+        animation: fadeIn 0.3s ease;
+      }
+      .alert-success {
+        background: #dcfce7;
+        color: #16a34a;
+        border: 1px solid #bbf7d0;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      @media (max-width: 768px) {
+        .stats-grid { grid-template-columns: 1fr; gap: 1rem; }
+        .card { padding: 2rem 1.5rem; }
+        .profile-cover { margin: 0 -1.5rem; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="container">
+      
+      <a href="dashboard.html" class="back-nav">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        Kembali ke Dashboard
+      </a>
+
+      <div class="card profile-card">
+        <div class="profile-cover"></div>
+        
+        <div class="profile-main">
+          <div class="avatar-wrapper">
+            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=250&q=80" alt="Foto Profil" class="avatar-img" id="avatar-display">
+            
+            <div class="edit-photo-btn" title="Ubah Foto">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            </div>
+          </div>
+          
+          <div class="profile-info">
+            <h2 id="display-name">Memuat...</h2>
+            <p id="display-email">Memuat...</p>
+            <span class="role-badge" id="display-role">Mahasiswa</span>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="value" id="stat-tasks">0</div>
+            <div class="label">Tugas Selesai</div>
+          </div>
+          <div class="stat-item">
+            <div class="value" id="stat-sleep">0h</div>
+            <div class="label">Rata-rata Tidur</div>
+          </div>
+          <div class="stat-item">
+            <div class="value" id="stat-streak">0🔥</div>
+            <div class="label">Streak Aktif</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="form-title">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+          Informasi Akun
+        </h2>
+        
+        <div id="update-alert" class="alert alert-success">✅ Perubahan profil berhasil disimpan!</div>
+
+        <form id="profile-form">
+          <div class="form-group">
+            <label for="edit-name">Nama Lengkap</label>
+            <input type="text" id="edit-name" required />
+          </div>
+          <div class="form-group">
+            <label for="edit-email">Alamat Email</label>
+            <input type="email" id="edit-email" required />
+          </div>
+          
+          <button type="submit" class="btn">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+            Simpan Perubahan
+          </button>
+        </form>
+
+        <button onclick="logout()" class="btn btn-danger">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+          Keluar dari Akun
+        </button>
+      </div>
+
+    </div>
+
+    <script>
+      // 1. INIT USER
+      const user = JSON.parse(localStorage.getItem("currentUser"));
+      if (!user) {
+        window.location.href = "index.html";
+      }
+
+      // Format Role
+      if (user.role === "admin") {
+        document.getElementById("display-role").classList.add("admin");
+        document.getElementById("display-role").textContent = "Administrator";
+      }
+
+      // 2. TAMPILKAN DATA PROFIL
+      document.getElementById("display-name").textContent = user.name;
+      document.getElementById("display-email").textContent = user.email;
+      
+      // Isi form edit dengan data saat ini
+      document.getElementById("edit-name").value = user.name;
+      document.getElementById("edit-email").value = user.email;
+
+      // 3. KALKULASI STATISTIK (Local Data)
+      // Hitung Tugas Selesai
+      const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+      const completedTasks = tasks.filter(t => t.userId === user.id && t.status === "completed").length;
+      document.getElementById("stat-tasks").textContent = completedTasks;
+
+      // Hitung Rata-rata Tidur & Streak
+      const healthData = JSON.parse(localStorage.getItem("healthData") || "[]");
+      const userHealthData = healthData.filter(d => d.userId === user.id).slice(-7);
+      
+      if (userHealthData.length > 0) {
+        const avgSleep = (userHealthData.reduce((sum, d) => sum + d.sleepHours, 0) / userHealthData.length).toFixed(1);
+        document.getElementById("stat-sleep").textContent = `${avgSleep}h`;
+        document.getElementById("stat-streak").textContent = `${userHealthData.length}🔥`;
+      }
+
+      // 4. LOGIKA SIMPAN PERUBAHAN
+      document.getElementById("profile-form").addEventListener("submit", function(e) {
+        e.preventDefault();
+        
+        const newName = document.getElementById("edit-name").value;
+        const newEmail = document.getElementById("edit-email").value;
+
+        // Update data di localStorage
+        let users = JSON.parse(localStorage.getItem("users") || "[]");
+        const userIndex = users.findIndex(u => u.id === user.id);
+        
+        if (userIndex !== -1) {
+          users[userIndex].name = newName;
+          users[userIndex].email = newEmail;
+          localStorage.setItem("users", JSON.stringify(users));
+        }
+
+        // Update session ('currentUser')
+        user.name = newName;
+        user.email = newEmail;
+        localStorage.setItem("currentUser", JSON.stringify(user));
+
+       
+        document.getElementById("display-name").textContent = newName;
+        document.getElementById("display-email").textContent = newEmail;
+
+       
+        const alertBox = document.getElementById("update-alert");
+        alertBox.style.display = "block";
+        setTimeout(() => {
+          alertBox.style.display = "none";
+        }, 3500);
+      });
+
+      
+      function logout() {
+        localStorage.removeItem("currentUser");
+        window.location.href = "index.html";
+      }
+    </script>
+  </body>
+</html>

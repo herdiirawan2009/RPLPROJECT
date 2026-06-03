@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar - Uni Life Support</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+        background: #e0e7ff;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        color: #1f2937;
+        position: relative;
+        overflow: hidden; /* Biar blob gak bikin scroll */
+      }
+
+      /* Abstract Blobs for Glassmorphism Effect */
+      .blob-1 {
+        position: absolute;
+        top: -10%;
+        left: -5%;
+        width: 500px;
+        height: 500px;
+        background: #93c5fd;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.7;
+        z-index: 0;
+      }
+      .blob-2 {
+        position: absolute;
+        bottom: -10%;
+        right: -5%;
+        width: 600px;
+        height: 600px;
+        background: #c4b5fd;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.6;
+        z-index: 0;
+      }
+
+      /* Sleek Glassmorphism Card */
+      .auth-card {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 28px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+        padding: 2.5rem;
+        max-width: 26rem;
+        width: 100%;
+        z-index: 10;
+      }
+
+      .logo-container {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      .logo-icon {
+        width: 56px;
+        height: 56px;
+        background: #3b82f6; /* Warna Biru Terang */
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.25rem;
+        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #1e3a8a;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.5px;
+      }
+      .logo-container p {
+        color: #475569;
+        font-weight: 500;
+        font-size: 0.95rem;
+      }
+
+      /* Form Inputs */
+      .form-group {
+        margin-bottom: 1.15rem;
+      }
+      .form-group label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 0.9rem 1.25rem;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        border-radius: 14px;
+        font-size: 1rem;
+        font-family: inherit;
+        color: #1e293b;
+        background: rgba(255, 255, 255, 0.8);
+        transition: all 0.3s ease;
+      }
+      .form-group input:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: #3b82f6; /* Fokus Biru Terang */
+        background: #ffffff;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+      }
+      .form-group input::placeholder {
+        color: #94a3b8;
+      }
+
+      /* Error Message */
+      .error-message {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #dc2626;
+        padding: 0.85rem;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 1.25rem;
+        display: none;
+        text-align: center;
+      }
+
+      /* Tombol Utama */
+      .btn {
+        width: 100%;
+        padding: 1.1rem;
+        background: #3b82f6; /* Warna Biru Terang */
+        color: white;
+        border: none;
+        border-radius: 14px;
+        font-weight: 800;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 0.5rem;
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.25);
+      }
+      .btn:hover {
+        background: #2563eb;
+        transform: translateY(-2px);
+        box-shadow: 0 15px 25px rgba(59, 130, 246, 0.35);
+      }
+
+      /* Footer Link */
+      .auth-footer {
+        margin-top: 1.5rem;
+        text-align: center;
+        color: #475569;
+        font-size: 0.95rem;
+        font-weight: 500;
+      }
+      .auth-footer a {
+        color: #2563eb;
+        font-weight: 700;
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .auth-footer a:hover {
+        color: #1d4ed8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="blob-1"></div>
+    <div class="blob-2"></div>
+
+    <div class="auth-card">
+      <div class="logo-container">
+        <div class="logo-icon">
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#ffffff"
+            stroke-width="2.5"
+          >
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+        </div>
+        <h1>Buat Akun</h1>
+        <p>Mulai manajemen kehidupan kampusmu</p>
+      </div>
+
+      <form id="register-form">
+        <div class="form-group">
+          <label for="register-name">Nama Lengkap</label>
+          <input
+            type="text"
+            id="register-name"
+            placeholder="John Doe"
+            required
+          />
+        </div>
+        
+        <div class="form-group">
+          <label for="register-email">Alamat Email</label>
+          <input
+            type="email"
+            id="register-email"
+            placeholder="mahasiswa@kampus.ac.id"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="register-password">Kata Sandi</label>
+          <input
+            type="password"
+            id="register-password"
+            placeholder="Minimal 6 karakter"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="register-role">Akses Peran</label>
+          <select id="register-role">
+            <option value="student">Mahasiswa</option>
+            <option value="admin">Administrator</option>
+          </select>
+        </div>
+
+        <div id="register-error" class="error-message"></div>
+        
+        <button type="submit" class="btn">Daftar Sekarang</button>
+      </form>
+
+      <div class="auth-footer">
+        Sudah memiliki akun? <a href="index.html">Masuk di sini</a>
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("register-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const name = document.getElementById("register-name").value;
+          const email = document.getElementById("register-email").value;
+          const password = document.getElementById("register-password").value;
+          const role = document.getElementById("register-role").value;
+          const errorDiv = document.getElementById("register-error");
+
+          if (password.length < 6) {
+            errorDiv.textContent = "Kata sandi minimal 6 karakter.";
+            errorDiv.style.display = "block";
+            return;
+          }
+
+          const users = JSON.parse(localStorage.getItem("users") || "[]");
+
+          if (users.find((u) => u.email === email)) {
+            errorDiv.textContent = "Email sudah terdaftar di sistem.";
+            errorDiv.style.display = "block";
+            return;
+          }
+
+          const newUser = {
+            id: Date.now().toString(),
+            email,
+            password,
+            name,
+            role,
+          };
+
+          users.push(newUser);
+          localStorage.setItem("users", JSON.stringify(users));
+
+          const userWithoutPassword = {
+            id: newUser.id,
+            email: newUser.email,
+            name: newUser.name,
+            role: newUser.role,
+          };
+          
+          localStorage.setItem(
+            "currentUser",
+            JSON.stringify(userWithoutPassword),
+          );
+          
+          window.location.href = "dashboard.html";
+        });
+    </script>
+  </body>
+</html>

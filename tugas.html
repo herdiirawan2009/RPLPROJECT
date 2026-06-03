@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tugas - Uni Life Support</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+        background: linear-gradient(to bottom right, #eff6ff, #e0e7ff);
+        background-attachment: fixed;
+        min-height: 100vh;
+        color: #1f2937;
+        padding-bottom: 150px; 
+      }
+
+      .container {
+        max-width: 55rem; 
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem;
+      }
+
+      .card {
+        background: #ffffff;
+        border-radius: 24px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+        border: 1px solid #f1f5f9;
+        padding: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .page-header {
+        margin-bottom: 2.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .header-text h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #1e3a8a;
+        margin-bottom: 0.25rem;
+      }
+      .header-text p {
+        color: #64748b;
+        font-weight: 500;
+      }
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+      
+      .user-avatar-link {
+        display: block;
+        text-decoration: none;
+      }
+      .user-avatar {
+        width: 65px;
+        height: 65px;
+        border-radius: 22px;
+        object-fit: cover;
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.25);
+        border: 3px solid #ffffff;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: #f1f5f9;
+      }
+      .user-avatar-link:hover .user-avatar {
+        transform: translateY(-4px) scale(1.05);
+        box-shadow: 0 15px 25px rgba(59, 130, 246, 0.35);
+        border-color: #eff6ff;
+      }
+
+      .btn {
+        padding: 0.8rem 1.5rem;
+        background: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);
+      }
+      .btn:hover { background: #2563eb; transform: translateY(-2px); }
+      .btn-secondary {
+        background: #f1f5f9;
+        color: #475569;
+        box-shadow: none;
+      }
+      .btn-secondary:hover { background: #e2e8f0; }
+
+      .hidden { display: none; }
+      #form-title {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 1.5rem;
+      }
+      .form-group { margin-bottom: 1.25rem; }
+      .form-group label {
+        display: block;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #475569;
+        margin-bottom: 0.5rem;
+      }
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 0.9rem 1.25rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-family: inherit;
+        font-size: 1rem;
+        color: #1e293b;
+        transition: border-color 0.3s;
+      }
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #3b82f6;
+      }
+      .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .tasks-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .task-item {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        padding: 1.5rem;
+        border: 1px solid #f1f5f9;
+        transition: transform 0.3s, box-shadow 0.3s;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .task-item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.05);
+      }
+      
+      .task-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      .task-title {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 0.25rem;
+      }
+      
+      .task-badge {
+        padding: 0.3rem 0.8rem;
+        border-radius: 100px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .task-badge.pending { background: #f1f5f9; color: #475569; }
+      .task-badge.in-progress { background: #dbeafe; color: #1d4ed8; }
+      .task-badge.completed { background: #dcfce7; color: #15803d; }
+
+      .task-description {
+        color: #64748b;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        background: #f8fafc;
+        padding: 1rem;
+        border-radius: 12px;
+      }
+
+      .task-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0.5rem;
+        border-top: 1px dashed #e2e8f0;
+        padding-top: 1rem;
+      }
+      .task-meta {
+        display: flex;
+        gap: 1.5rem;
+        font-size: 0.9rem;
+        color: #64748b;
+        font-weight: 500;
+      }
+      
+      .task-actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+      .action-btn {
+        padding: 0.6rem;
+        border: none;
+        background: #f1f5f9;
+        border-radius: 10px;
+        cursor: pointer;
+        color: #475569;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .action-btn:hover { background: #e2e8f0; color: #1e293b; }
+      .btn-edit:hover { background: #dbeafe; color: #2563eb; }
+      .btn-delete:hover { background: #fee2e2; color: #ef4444; }
+
+      .task-item.is-completed { opacity: 0.6; }
+      .task-item.is-completed .task-title { text-decoration: line-through; }
+
+      .empty-tasks {
+        background: white;
+        border-radius: 24px;
+        padding: 4rem 2rem;
+        text-align: center;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+      }
+      .empty-tasks h3 {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .empty-tasks p { color: #64748b; }
+
+      .floating-dock {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        padding: 1rem 2rem;
+        border-radius: 100px;
+        display: flex;
+        gap: 1.5rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+      }
+      .dock-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        text-decoration: none;
+        color: #475569;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+      }
+      .dock-item svg {
+        width: 30px;
+        height: 30px;
+        stroke-width: 2.2;
+        transition: all 0.3s;
+      }
+      .dock-item:hover {
+        background: rgba(255, 255, 255, 0.8);
+        transform: translateY(-8px);
+        color: #2563eb;
+      }
+      .dock-item.active {
+        background: #3b82f6;
+        color: white;
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+      }
+      .dock-item.logout { color: #ef4444; }
+      .dock-item.logout:hover {
+        background: #fee2e2;
+        color: #ef4444;
+      }
+
+      @media (max-width: 768px) {
+        .page-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+        .header-actions { width: 100%; justify-content: space-between; }
+        .task-footer { flex-direction: column; align-items: flex-start; gap: 1rem; }
+        .task-actions { width: 100%; justify-content: flex-end; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <nav class="floating-dock">
+      <a href="dashboard.html" class="dock-item">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+      </a>
+      <a href="input.html" class="dock-item">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+      </a>
+      <a href="tugas.html" class="dock-item active">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+      </a>
+      <a href="admin.html" class="dock-item" id="admin-link">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+      </a>
+      <button onclick="logout()" class="dock-item logout">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+      </button>
+    </nav>
+
+    <div class="container">
+      
+      <div class="page-header">
+        <div class="header-text">
+          <h1>Manajemen Tugas</h1>
+          <p>Catat dan pantau semua deadline kuliahmu di sini</p>
+        </div>
+        <div class="header-actions">
+            <button onclick="toggleForm()" class="btn" id="toggle-btn">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+              Tambah Tugas
+            </button>
+            <a href="profil.html" class="user-avatar-link" title="Buka Profil">
+              <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=250&q=80" alt="Foto Profil" class="user-avatar">
+            </a>
+        </div>
+      </div>
+
+      <div id="task-form" class="card hidden">
+        <h2 id="form-title">✨ Tugas Baru</h2>
+        <form id="taskForm">
+          <div class="form-group">
+            <label>Judul Tugas</label>
+            <input type="text" id="task-title" placeholder="Cth: Laporan Praktikum Jarkom" required />
+          </div>
+          <div class="form-group">
+            <label>Catatan Tambahan (Opsional)</label>
+            <textarea id="task-description" rows="3" placeholder="Tambahkan link referensi atau detail tugas..."></textarea>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+              <div class="form-group">
+                <label>Deadline</label>
+                <input type="date" id="task-deadline" required />
+              </div>
+              <div class="form-group">
+                <label>Status Saat Ini</label>
+                <select id="task-status">
+                  <option value="pending">⏳ Pending</option>
+                  <option value="in-progress">🏃‍♂️ Sedang Dikerjakan</option>
+                  <option value="completed">✅ Selesai</option>
+                </select>
+              </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn">💾 Simpan Tugas</button>
+            <button type="button" onclick="cancelEdit()" class="btn btn-secondary">Batal</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="tasks-list" class="tasks-container">
+          </div>
+      
+    </div>
+
+    <script>
+      const user = JSON.parse(localStorage.getItem("currentUser"));
+      if (!user) window.location.href = "index.html";
+
+      if (user.role !== 'admin') {
+          document.getElementById('admin-link').style.display = 'none';
+      }
+
+      function logout() {
+        localStorage.removeItem("currentUser");
+        window.location.href = "index.html";
+      }
+
+      let editingTaskId = null;
+
+      function toggleForm() {
+        const form = document.getElementById("task-form");
+        const btn = document.getElementById("toggle-btn");
+        if (form.classList.contains("hidden")) {
+          form.classList.remove("hidden");
+          btn.innerHTML = `<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg> Tutup Form`;
+          btn.classList.add("btn-secondary");
+        } else {
+          form.classList.add("hidden");
+          btn.innerHTML = `<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg> Tambah Tugas`;
+          btn.classList.remove("btn-secondary");
+          cancelEdit();
+        }
+      }
+
+      function loadTasks() {
+        const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+        const userTasks = tasks.filter((t) => t.userId === user.id);
+        
+        userTasks.sort((a, b) => {
+            if(a.status === 'completed' && b.status !== 'completed') return 1;
+            if(a.status !== 'completed' && b.status === 'completed') return -1;
+            return new Date(a.deadline) - new Date(b.deadline);
+        });
+
+        const listDiv = document.getElementById("tasks-list");
+
+        if (userTasks.length === 0) {
+          listDiv.innerHTML = `
+            <div class="empty-tasks">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.5" style="margin: 0 auto;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                </svg>
+                <h3>Yay! Bebas Tugas! 🎉</h3>
+                <p>Klik tombol "Tambah Tugas" kalau ada deadline baru dari dosen.</p>
+            </div>
+          `;
+        } else {
+          listDiv.innerHTML = userTasks.map((task) => {
+              const daysUntil = Math.floor((new Date(task.deadline).setHours(0,0,0,0) - new Date().setHours(0,0,0,0)) / (1000 * 60 * 60 * 24));
+              const deadlineDate = new Date(task.deadline).toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' });
+
+              let deadlineText = "";
+              let deadlineColor = "#64748b";
+              const isCompleted = task.status === "completed";
+
+              if (isCompleted) {
+                deadlineText = "Tugas Selesai";
+                deadlineColor = "#15803d";
+              } else if (daysUntil < 0) {
+                deadlineText = `Terlambat ${Math.abs(daysUntil)} hari`;
+                deadlineColor = "#ef4444";
+              } else if (daysUntil === 0) {
+                deadlineText = "Deadline Hari Ini!";
+                deadlineColor = "#ef4444";
+              } else {
+                deadlineText = `${daysUntil} hari lagi`;
+                deadlineColor = daysUntil <= 2 ? "#ea580c" : "#64748b";
+              }
+
+              const statusLabels = {
+                "pending": "Pending",
+                "in-progress": "Sedang Dikerjakan",
+                "completed": "Selesai"
+              };
+
+              return `
+                <div class="task-item ${isCompleted ? 'is-completed' : ''}">
+                    <div class="task-header">
+                        <div class="task-title">${task.title}</div>
+                        <div class="task-badge ${task.status}">${statusLabels[task.status]}</div>
+                    </div>
+                    
+                    ${task.description ? `<div class="task-description">${task.description}</div>` : ""}
+                    
+                    <div class="task-footer">
+                        <div class="task-meta">
+                            <span>📅 ${deadlineDate}</span>
+                            <span style="color: ${deadlineColor}; font-weight: 800;">⏰ ${deadlineText}</span>
+                        </div>
+                        <div class="task-actions">
+                            <button class="action-btn btn-edit" onclick="editTask('${task.id}')" title="Edit Tugas">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            </button>
+                            <button class="action-btn btn-delete" onclick="deleteTask('${task.id}')" title="Hapus Tugas">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+              `;
+            }).join("");
+        }
+      }
+
+      function editTask(taskId) {
+        const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+        const task = tasks.find((t) => t.id === taskId);
+        if (!task) return;
+
+        editingTaskId = taskId;
+        document.getElementById("form-title").textContent = "✏️ Edit Tugas";
+        document.getElementById("task-title").value = task.title;
+        document.getElementById("task-description").value = task.description || "";
+        document.getElementById("task-deadline").value = task.deadline;
+        document.getElementById("task-status").value = task.status;
+
+        document.getElementById("task-form").classList.remove("hidden");
+        const btn = document.getElementById("toggle-btn");
+        btn.innerHTML = `<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg> Tutup Form`;
+        btn.classList.add("btn-secondary");
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function cancelEdit() {
+        editingTaskId = null;
+        document.getElementById("form-title").textContent = "✨ Tugas Baru";
+        document.getElementById("taskForm").reset();
+      }
+
+      function deleteTask(taskId) {
+        if (!confirm("Yakin mau menghapus tugas ini?")) return;
+        const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+        const updated = tasks.filter((t) => t.id !== taskId);
+        localStorage.setItem("tasks", JSON.stringify(updated));
+        loadTasks();
+      }
+
+      document.getElementById("taskForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const title = document.getElementById("task-title").value;
+        const description = document.getElementById("task-description").value;
+        const deadline = document.getElementById("task-deadline").value;
+        const status = document.getElementById("task-status").value;
+
+        const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+
+        if (editingTaskId) {
+          const index = tasks.findIndex((t) => t.id === editingTaskId);
+          tasks[index] = { ...tasks[index], title, description, deadline, status };
+        } else {
+          tasks.push({
+            id: Date.now().toString(),
+            userId: user.id,
+            title,
+            description,
+            deadline,
+            status,
+          });
+        }
+
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        toggleForm();
+        loadTasks();
+      });
+
+      loadTasks();
+    </script>
+  </body>
+</html>
